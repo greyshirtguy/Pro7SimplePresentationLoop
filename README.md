@@ -1,11 +1,15 @@
 # Pro7SimplePresentationLoop
-A crude and simple "digital signage" **experiment** for Pro7 all contained in a single .html file.
+A crude and simple "digital signage" **experiment** for Pro7 all contained in a single simpleloop.html.
+The idea is to that you can copy just a couple of files to any spare computers and set them up to run as very simple (crude) digital signage clients.
 
-This simple web page will connect to Pro7 (via new API in 7.9+) and for the specified presentation/library, it will get images of the all slides and then roll through a looping display of those slide images.
+![Pro7SimplePresentationLoop](Pro7SimplePresentationLoop.jpg)
 
-This is super simple and crude - but lightweight enough to run on little PC sticks/Raspberry Pi's
-You will want to setup the web-browser to run this .html file in fullscreen mode (and at computer startup).
+This simple web page will connect to Pro7 (via new API in 7.9+) and for the specified presentation/library, it will get images of the all slides and then roll through a looping display of those slide images.  It does not support anything more than that! No video, no animations - just a slideshow of disolving images. Hopefully this is lightweight enough to run on little PC sticks and Raspberry Pi's.
 
+It's just another fun experiment with the new Pro7 API.
+
+
+##Instructions:
 1. Copy simpleloop.html to a computer (on same network as Pro7).
 2. Open simpleloop.html in your fav text eidtor and update the following values in the script code to suit your setup:
 ```
@@ -26,6 +30,6 @@ background-image: url("./church-logo.jpg");
 ```
 4. Setup the computer to open this file in a web-browser, full-screen at startup.
 
-As far as I can tell, it will download the images once and cache them until the webpage is reloaded (or the presentation changes)
+I have aimed to make sure that it will download the images once and cache them until the webpage is reloaded (or the presentation changes)
 
-TODO: Make robust!
+TODO: Explore and perhaps make it robust!
