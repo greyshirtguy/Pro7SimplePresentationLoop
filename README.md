@@ -20,7 +20,7 @@ var transitionTime = 0.5; // Number of seconds to dissolve between each slide
 var refeshPollTime = 10;  // Number of seconds to wait before polling the presentation to check if it has any changes! (be careful not to impact the performance of your pro7 machine by polling the presentation too often!)
 /**********************************************************************/
 ```
-3. Update the initial background image url (example image included in source to demo using a local file - you can of course use online files)
+3. Optionally, update the initial background image url (example image included in source to demo using a local file - you can of course use online files)
 ```
 background-image: url("./church-logo.jpg");
 ```
