@@ -42,7 +42,6 @@ var presentationUUID;
 var imageBlobURLS = [];
 var xmlHttp = new XMLHttpRequest();
 var xmlHttpRefreshPoll = new XMLHttpRequest();
-var blobURL = [];
 var presentationInfo;
 var lastLoadTime = Date.now(); // Capture time (in ms since epoc) page was loaded
 var pollTimer;
@@ -53,6 +52,7 @@ bgElement.style["transition"] = String(transitionTime) + 's';
 
 // Setup refesh polling timer (Regularlycheck for changes and self-refresh page if presentation changed)
 pollTimer = setInterval(function () {
+  console.log('imageBlobURLS.length: ' + imageBlobURLS.length);
 
   if (!presentationUUID && Date.now() - lastLoadTime  > 15000) { // If it's been "too long" and we still don't have the presentationUUID - perform self reload!
     clearInterval(pollTimer);
@@ -69,7 +69,7 @@ pollTimer = setInterval(function () {
         if (!presentationInfo) {
           presentationInfo = xmlHttpRefreshPoll.response;
         } else {
-          if (xmlHttpRefreshPoll.response != presentationInfo || blobURL.length == 0) {
+          if (xmlHttpRefreshPoll.response != presentationInfo || imageBlobURLS.length == 0) {
             console.log("Presentation Updated Since Last Cache: " + xmlHttpRefreshPoll)
             location.reload();
           }
