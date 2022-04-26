@@ -1,10 +1,10 @@
 # Pro7SimplePresentationLoop
 A crude and simple "digital signage" **experiment** for Pro7 all contained in a single simpleloop.html.
-The idea is to that you can copy just a couple of files to any spare computers and set them up to run as very simple (crude) digital signage clients.
+The idea is to that you can copy the `simpleloop.html` file to a spare (small) computer and edit it to connect to your Pro7 setup and display an image slide show of a specific presentation.
 
 ![Pro7SimplePresentationLoop](Pro7SimplePresentationLoop.jpg)
 
-This simple web page will connect to Pro7 (via new API in 7.9+) and for the specified presentation/library, it will get images of the all slides and then roll through a looping display of those slide images.  It does not support anything more than that! No video, no animations - just a slideshow of disolving images. Hopefully this is lightweight enough to run on little PC sticks and Raspberry Pi's.
+This simple web page will connect to Pro7, via new API in 7.9+, and it will download slide images of the all slides for a specified presentation and then roll through a looping display of those slide images.  It does not support anything more than that! No video, no animations - just a slideshow of disolving images. Hopefully this is lightweight enough to run on little PC sticks and Raspberry Pi's.
 
 It's just another fun experiment with the new Pro7 API.
 
