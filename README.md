@@ -20,7 +20,11 @@ var transitionTime = 0.5; // Number of seconds to dissolve between each slide
 var refeshPollTime = 10;  // Number of seconds to wait before polling the presentation to check if it has any changes! (be careful not to impact the performance of your pro7 machine by polling the presentation too often!)
 /**********************************************************************/
 ```
-3. Setup the computer to open this file in a web-browser, full-screen at startup.
+3. Update the initial background image url (example image included in source to demo using a local file - you can of course use online files)
+```
+background-image: url("./church-logo.jpg");
+```
+4. Setup the computer to open this file in a web-browser, full-screen at startup.
 
 As far as I can tell, it will download the images once and cache them until the webpage is reloaded (or the presentation changes)
 
