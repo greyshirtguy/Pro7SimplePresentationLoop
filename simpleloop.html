@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body,html {
+  height: 100%;
+  margin: 0;
+}
+
+.bg {
+  /* The image used */
+  /*background-image: url("https://greyshirtguy.com/wp-content/uploads/2020/03/Pro6FilePart-2048x765.jpg");*/
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
+</head>
+<body>
+  <div id="bg" class="bg"></div>
+</body>
+<script>
+/*********** UPDATE THESE TO SUIT YOUR PRO7 SETUP *********************/
+var ipAddressOfProPresenterComputer = "192.168.1.7"; // Hostname can used used here also if you have hostname resolution for your ProPresenter computer
+var networkPortOfProPresenter = "50001"; // See ProPresenter network prefences
+var libraryName = "Signage"; // Name of library with presentations to be used as simple digital signage
+var presentationName = "Lobby Loop"; // Name of presenation (within library above) to run as simple slide show
+var slideQuality = "1920"; // Width of image in pixels
+var slideTime = 3; // Number of seconds to show each slide.
+var transitionTime = 0.5; // Number of seconds to dissolve between each slide
+/**********************************************************************/
+
+var currentSlideIndex = 0;
+var presentationUUID;
+var imageBlobURLS = [];
+var xmlHttp = new XMLHttpRequest();
+var blobURL;
+
+var bgElement = document.querySelector('.bg');
+bgElement.style["transition"] = String(transitionTime) + 's';
+
+xmlHttp.open( 'GET', 'http://' + ipAddressOfProPresenterComputer + ':' + networkPortOfProPresenter + '/v1/library/' + libraryName);
+
+xmlHttp.onload = function(e) {
+  if (xmlHttp.status == 200) {
+    
+    try {
+      var libraryInfo = JSON.parse(xmlHttp.response);
+      for (var i=0; i < libraryInfo.items.length; i++) {
+        if (libraryInfo.items[i].name == presentationName) {
+          presentationUUID = libraryInfo.items[i].uuid;
+          console.log('Found: ' + libraryInfo.items[i].name + ' (' + presentationUUID +') in library: ' + libraryName);
+          break;
+        }
+      }
+      
+      //console.log('Response: ' + xmlHttp.response);
+      getSlide(0); // start recursively getting all slide thumbs...
+
+      // start endless loop trough blob array
+      slideIndex = 0;
+      bgElement.style["background-image"] = 'url(' + imageBlobURLS[0] + ')';
+      setInterval(function(){
+        bgElement.style["background-image"] = 'url(' + imageBlobURLS[slideIndex++] + ')';
+        if (slideIndex == imageBlobURLS.length) {
+        slideIndex = 0;
+        }
+      },slideTime * 1000);
+
+    } catch (error) {
+      console.log('error: ' + error)
+    }
+  }
+};
+
+xmlHttp.onerror = function(e) {
+  console.log('error: ' + e)
+}
+
+
+xmlHttp.send();
+
+
+function getSlide(slideIndex) {
+  var xhr = new XMLHttpRequest();
+
+  try {
+    xhr.open('GET', 'http://' + ipAddressOfProPresenterComputer + ':' + networkPortOfProPresenter + '/v1/presentation/' + presentationUUID + '/thumbnail/' + slideIndex + '?quality=' + slideQuality, true);
+  } catch (error) {
+    console.log('error: ' + error);
+  }
+  
+  xhr.responseType = 'blob';
+
+  xhr.onload = () => {
+    if (xhr.status == 200) {
+
+    console.log('got image');
+    imageBlobURLS.push(window.URL.createObjectURL(xhr.response)); // create a temporary blob object to hold the image data and be the src for the image element (and store in local array)
+    
+    // Keep calling this getSlide function recursively for the next slide thumbnail until we fail with a 404 - need to do it this way since there is no way to astertain # of slides when a presentation has a custom arrangement active.
+    getSlide(slideIndex+1)
+
+    }
+  };
+
+
+try {
+  xhr.send();
+} catch (error) {
+  console.log('error: ' + error);
+}
+      
+}
+
+
+
+</script>
+</html>
