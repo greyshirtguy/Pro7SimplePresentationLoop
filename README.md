@@ -28,4 +28,4 @@ background-image: url("./church-logo.jpg");
 
 As far as I can tell, it will download the images once and cache them until the webpage is reloaded (or the presentation changes)
 
-TODO: Add auto retry for when Pro7 is not running and page tried to refresh/load
+TODO: Make robust!
