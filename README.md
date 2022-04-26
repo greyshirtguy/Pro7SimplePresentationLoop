@@ -9,7 +9,7 @@ This simple web page will connect to Pro7 (via new API in 7.9+) and for the spec
 It's just another fun experiment with the new Pro7 API.
 
 
-##Instructions:
+## Setup Instructions:
 1. Copy simpleloop.html to a computer (on same network as Pro7).
 2. Open simpleloop.html in your fav text eidtor and update the following values in the script code to suit your setup:
 ```
