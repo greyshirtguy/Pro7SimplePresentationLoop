@@ -10,8 +10,8 @@ It's just another fun experiment with the new Pro7 API.
 
 
 ## Setup Instructions:
-1. Copy simpleloop.html to a computer (on same network as Pro7).
-2. Open simpleloop.html in your fav text eidtor and update the following values in the script code to suit your setup:
+1. Copy `simpleloop.html` to a computer (on same network as Pro7).
+2. Open `simpleloop.html` in your favourite text editor and update the following values in the script code to suit your setup:
 ```
 /*********** UPDATE THESE TO SUIT YOUR PRO7 SETUP *********************/
 var ipAddressOfProPresenterComputer = "192.168.1.7"; // Hostname can used used here also if you have hostname resolution for your ProPresenter computer
