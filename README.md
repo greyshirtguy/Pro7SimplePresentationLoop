@@ -23,3 +23,5 @@ var refeshPollTime = 10;  // Number of seconds to wait before polling the presen
 3. Setup the computer to open this file in a web-browser, full-screen at startup.
 
 As far as I can tell, it will download the images once and cache them until the webpage is reloaded (or the presentation changes)
+
+TODO: Add auto retry for when Pro7 is not running and page tried to refresh/load
