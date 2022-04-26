@@ -8,7 +8,8 @@ body,html {
 }
 
 .bg {
-  /* The image used */
+  /*-webkit-backface-visibility: hidden;*/
+  /* Initial image (Church logo etc - to display when unable connect to Pro7) */
   /*background-image: url("https://greyshirtguy.com/wp-content/uploads/2020/03/Pro6FilePart-2048x765.jpg");*/
 
   /* Full height */
@@ -32,7 +33,7 @@ var libraryName = "Signage"; // Name of library with presentations to be used as
 var presentationName = "Lobby Loop"; // Name of presenation (within library above) to run as simple slide show
 var slideQuality = "1920"; // Width of image in pixels
 var slideTime = 3; // Number of seconds to show each slide.
-var transitionTime = 0.5; // Number of seconds to dissolve between each slide
+var transitionTime = 1; // Number of seconds to dissolve between each slide
 var refeshPollTime = 10;  // Number of seconds to wait before polling the presentation to check if it has any changes! (be careful not to impact the performance of your pro7 machine by polling the presentation too often!)
 /**********************************************************************/
 
@@ -43,12 +44,22 @@ var xmlHttp = new XMLHttpRequest();
 var xmlHttpRefreshPoll = new XMLHttpRequest();
 var blobURL;
 var presentationInfo;
+var lastLoadTime = Date.now(); // Capture time (in ms since epoc) page was loaded
+var pollTimer;
+var slideTimer;
 
 var bgElement = document.querySelector('.bg');
 bgElement.style["transition"] = String(transitionTime) + 's';
 
 // Setup refesh polling timer (Regularlycheck for changes and self-refresh page if presentation changed)
-setInterval(function () {
+pollTimer = setInterval(function () {
+
+  if (!presentationUUID && Date.now() - lastLoadTime  > 15000) { // If it's been "too long" and we still don't have the presentationUUID - perform self reload!
+    clearInterval(pollTimer);
+    clearInterval(slideTimer);
+    location.reload();
+  }
+
   if (presentationUUID) {  // If we already know the id of the presentation we are presenting - we can track it for changes in a separate background process here
     console.log('getting presentation info: ' + presentationUUID);
     xmlHttpRefreshPoll.open('GET', 'http://' + ipAddressOfProPresenterComputer + ':' + networkPortOfProPresenter + '/v1/presentation/' + presentationUUID);
@@ -94,7 +105,7 @@ xmlHttp.onload = function(e) {
       // start endless loop trough blob array
       slideIndex = 0;
       bgElement.style["background-image"] = 'url(' + imageBlobURLS[0] + ')';
-      setInterval(function(){
+      slideTimer = setInterval(function(){
         bgElement.style["background-image"] = 'url(' + imageBlobURLS[slideIndex++] + ')';
         if (slideIndex == imageBlobURLS.length) {
         slideIndex = 0;
@@ -102,13 +113,13 @@ xmlHttp.onload = function(e) {
       },slideTime * 1000);
 
     } catch (error) {
-      console.log('error: ' + error)
+      console.log('Error: ' + error + ' loading library at: http://' + ipAddressOfProPresenterComputer + ':' + networkPortOfProPresenter + '/v1/library/' + libraryName); 
     }
   }
 };
 
-xmlHttp.onerror = function(e) {
-  console.log('error: ' + e)
+xmlHttp.onerror = function(error) {
+  console.log('Error: ' + error + ' loading library at: http://' + ipAddressOfProPresenterComputer + ':' + networkPortOfProPresenter + '/v1/library/' + libraryName)
 }
 
 
