@@ -33,17 +33,46 @@ var presentationName = "Lobby Loop"; // Name of presenation (within library abov
 var slideQuality = "1920"; // Width of image in pixels
 var slideTime = 3; // Number of seconds to show each slide.
 var transitionTime = 0.5; // Number of seconds to dissolve between each slide
+var refeshPollTime = 10;  // Number of seconds to wait before polling the presentation to check if it has any changes! (be careful not to impact the performance of your pro7 machine by polling the presentation too often!)
 /**********************************************************************/
 
 var currentSlideIndex = 0;
 var presentationUUID;
 var imageBlobURLS = [];
 var xmlHttp = new XMLHttpRequest();
+var xmlHttpRefreshPoll = new XMLHttpRequest();
 var blobURL;
+var presentationInfo;
 
 var bgElement = document.querySelector('.bg');
 bgElement.style["transition"] = String(transitionTime) + 's';
 
+// Setup refesh polling timer (Regularlycheck for changes and self-refresh page if presentation changed)
+setInterval(function () {
+  if (presentationUUID) {  // If we already know the id of the presentation we are presenting - we can track it for changes in a separate background process here
+    console.log('getting presentation info: ' + presentationUUID);
+    xmlHttpRefreshPoll.open('GET', 'http://' + ipAddressOfProPresenterComputer + ':' + networkPortOfProPresenter + '/v1/presentation/' + presentationUUID);
+
+    xmlHttpRefreshPoll.onload = function(e) {
+      if (xmlHttpRefreshPoll.status == 200) {
+        if (!presentationInfo) {
+          presentationInfo = xmlHttpRefreshPoll.response;
+        } else {
+          if (xmlHttpRefreshPoll.response != presentationInfo) {
+            console.log("Presentation Updated Since Last Cache: " + xmlHttpRefreshPoll)
+            location.reload();
+          }
+        }
+      }
+    }
+
+    xmlHttpRefreshPoll.send();
+
+  }
+}, refeshPollTime *1000);
+
+
+// Get list of presentations in select library:
 xmlHttp.open( 'GET', 'http://' + ipAddressOfProPresenterComputer + ':' + networkPortOfProPresenter + '/v1/library/' + libraryName);
 
 xmlHttp.onload = function(e) {
@@ -59,7 +88,7 @@ xmlHttp.onload = function(e) {
         }
       }
       
-      //console.log('Response: ' + xmlHttp.response);
+      console.log('Response: ' + xmlHttp.response);
       getSlide(0); // start recursively getting all slide thumbs...
 
       // start endless loop trough blob array
