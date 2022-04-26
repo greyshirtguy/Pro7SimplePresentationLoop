@@ -1,5 +1,5 @@
 # Pro7SimplePresentationLoop
-A crude and simple "digital signage" experiment for Pro7 all contained in a single .html file.
+A crude and simple "digital signage" **experiment** for Pro7 all contained in a single .html file.
 
 This simple web page will connect to Pro7 (via new API in 7.9+) and for the specified presentation/library, it will get images of the all slides and then roll through a looping display of those slide images.
 
@@ -7,7 +7,7 @@ This is super simple and crude - but lightweight enough to run on little PC stic
 You will want to setup the web-browser to run this .html file in fullscreen mode (and at computer startup).
 
 1. Copy simpleloop.html to a computer (on same network as Pro7).
-2. Update the follow values in the script code to suit your setup:
+2. Open simpleloop.html in your fav text eidtor and update the following values in the script code to suit your setup:
 ```
 /*********** UPDATE THESE TO SUIT YOUR PRO7 SETUP *********************/
 var ipAddressOfProPresenterComputer = "192.168.1.7"; // Hostname can used used here also if you have hostname resolution for your ProPresenter computer
